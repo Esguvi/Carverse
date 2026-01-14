@@ -12,7 +12,7 @@ def create_app():
     from rutas_usuarios import bp as usuarios_bp
     app.register_blueprint(usuarios_bp, url_prefix='/api/usuarios')
 
-    from api.web.rutas_coches import bp as coches_bp
+    from rutas_coches import bp as coches_bp
     app.register_blueprint(coches_bp, url_prefix='/api/coches')
 
     from rutas_ficheros import bp as ficheros_bp
