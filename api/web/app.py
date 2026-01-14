@@ -5,14 +5,14 @@ from variables import cargarvariables
 def create_app():
     app = Flask(__name__)
 
-    # configuración...
+    # configuracion...
     app.config.setdefault('DEBUG', True)
 
-    # Importar y registrar blueprints aquí (evita side-effects en import)
+    # Importar y registrar blueprints aqui (evita side-effects en import)
     from rutas_usuarios import bp as usuarios_bp
     app.register_blueprint(usuarios_bp, url_prefix='/api/usuarios')
 
-    from api.web.rutas_coches import bp as coches_bp
+    from rutas_coches import bp as coches_bp
     app.register_blueprint(coches_bp, url_prefix='/api/coches')
 
     from rutas_ficheros import bp as ficheros_bp

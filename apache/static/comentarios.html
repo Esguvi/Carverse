@@ -23,7 +23,7 @@
         }
         function guardarComentario() {
             var raw = JSON.stringify({
-                "usuario": document.getElementById("usuario").value,
+                "email": document.getElementById("email").value,
                 "descripcion": document.getElementById("descripcion").value
             });
 
@@ -51,7 +51,7 @@
 
             lista.forEach(comentario => {
                 let texto=`<tr>
-                        <td>${comentario.usuario}</td>
+                        <td>${comentario.email}</td>
                         <td>${comentario.descripcion}</td>
                         <td>
                         </tr>`;
@@ -98,8 +98,8 @@
         </div>  
     </section>   
             <h3 class="is-size-3">Agregar Comentario</h3>
-                <label for="usuario">Usuario:</label>
-                <input required type="text" class="input" placeholder="usuario" name="usuario" id="usuario">
+                <label for="email">Usuario:</label>
+                <input required type="text" class="input" placeholder="email" name="email" id="email">
                 <label for="descripcion">Descripcion:</label>
                 <input required type="text" class="input" placeholder="Comentario" name="descripcion" id="descripcion">
                 <button type="button" onclick="guardarComentario()" class="button is-success mt-2">Guardar</button>

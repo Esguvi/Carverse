@@ -262,3 +262,10 @@ input[type="checkbox"] {
 	height: 40px;
 	width: 40px;
 }
+
+.error {
+	display: none;
+	color: red;
+	margin-top: 10px;
+	font-size: 14px;
+}

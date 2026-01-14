@@ -25,7 +25,7 @@
         function conectar() {
             document.getElementsByClassName("error")[0].style.display = "none";
             var raw = JSON.stringify({
-                "username": document.getElementById("username").value,
+                "email": document.getElementById("email").value,
                 "password": document.getElementById("password").value
             });
 
@@ -51,9 +51,9 @@
 
 <body>
     <h1>BIENVENIDO AL SISTEMA DEL PROFE</h1>
-    <label>Usuario</label><input type="text" name="username" id="username"><br>
+    <label>Usuario</label><input type="text" name="email" id="email"><br>
     <label>Clave</label><input type="password" name="password" id="password"><br>
-    <label class="error">Usuario/clave erronea</label>
+    <label class="error">Usuario/password erronea</label>
     <button type="button" onclick="conectar()">ENVIAR</button>
     <button type="button" onclick="location.href='registro.html'">REGISTRARSE</button>
 
