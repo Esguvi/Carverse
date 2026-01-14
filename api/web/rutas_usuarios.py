@@ -10,9 +10,9 @@ def login():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         login_json = request.json
-        username = login_json['username']
+        email = login_json['email']
         password = login_json['password']
-        respuesta,code= controlador_usuarios.login_usuario(username,password)
+        respuesta,code= controlador_usuarios.login_usuario(email,password)
     else:
         respuesta={"status":"Bad request"}
         code=401
@@ -23,10 +23,10 @@ def registro():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         login_json = request.json
-        username = login_json['username']
+        email = login_json['email']
         password = login_json['password']
-        profile = login_json['profile']
-        respuesta,code= controlador_usuarios.alta_usuario(username,password,profile)
+        name = login_json['name']
+        respuesta,code= controlador_usuarios.alta_usuario(email,password,name)
     else:
         respuesta={"status":"Bad request"}
         code=401

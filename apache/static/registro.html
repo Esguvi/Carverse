@@ -22,9 +22,9 @@
         function conectar(){
             document.getElementsByClassName("error")[0].style.display="none";
             var raw = JSON.stringify({
-                "username": document.getElementById("username").value,
+                "email": document.getElementById("email").value,
                 "password": document.getElementById("password").value,
-                "profile": document.getElementById("profile").value
+                "name": document.getElementById("name").value
             });
 
             var requestOptions = {
@@ -49,9 +49,9 @@
 </head>
 <body>
     <h1>REGISTRO DEL SISTEMA</h1>
-    <label>Usuario</label><input type="text" name="username" id="username" required><br>
+    <label>Usuario</label><input type="text" name="email" id="email" required><br>
     <label>Clave</label><input type="password" name="password" id="password" required><br>
-    <label>Perfil</label><input type="text" disabled name="profile" id="profile" value="normal"><br>
+    <label>Perfil</label><input type="text" disabled name="name" id="name" value="normal"><br>
     <label class="error">Usuario ya existe</label>
     <button type="button" onclick="conectar()">ENVIAR</button>
 </body>
