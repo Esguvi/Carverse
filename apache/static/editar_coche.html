@@ -31,7 +31,7 @@
                 .then(response => response.json())
                 .then(result => pintarCoche(result))
                 .catch(error => {
-                    alert("Ha habido un error al recuperar los datos del libro");
+                    alert("Ha habido un error al recuperar los datos de los coches");
                     location.href = "coches.html";
                 });
 
@@ -41,7 +41,7 @@
             
             document.getElementById("nombre").value = coche.nombre;
             document.getElementById("descripcion").value = coche.descripcion;
-            document.getElementById("ingredientes").value = coche.ingredientes;
+            document.getElementById("marca").value = coche.marca;
             document.getElementById("precio").value = coche.precio;
             document.getElementById("foto").src = coche.foto;
         }
@@ -49,7 +49,7 @@
         function guardar() {
             let nombre = document.getElementById("nombre").value;
             let descripcion= document.getElementById("descripcion").value;
-            let ingredientes = document.getElementById("ingredientes").value;
+            let marca = document.getElementById("marca").value;
             let precio = document.getElementById("precio").value;
            // let precioIVA = document.getElementById("precioIVA").value;
             let foto = document.getElementById("foto").value;
@@ -57,7 +57,7 @@
                 "id": id,
                 "nombre": nombre,
                 "descripcion": descripcion,
-                "ingredientes": ingredientes,
+                "marca": marca,
                 "precio": precio,
               //  "precioIVA": precioIVA,
                 "foto": foto
@@ -79,12 +79,12 @@
                         alert("coche modificado")
                         location.href = "coches.html"
                     } else {
-                        alert("La coche no ha podido ser modificado")
+                        alert("El coche no ha podido ser modificado")
                     }
                 })
                 .catch(error => {
                     console.log('error', error);
-                    alert("Se ha producido un error y la coche no ha podido ser modificado")
+                    alert("Se ha producido un error y el coche no ha podido ser modificado")
                 });
         }
     </script>
@@ -118,8 +118,8 @@
                 <input required type="text" class="input" placeholder="Nombre" name="nombre" id="nombre">
                 <label for="descripcion">Descripcion</label>
                 <input required type="text" class="input" placeholder="Descripcion" name="descripcion" id="descripcion">
-                <label for="ingredientes">Ingredientes</label>
-                <input required type="text" class="input" placeholder="Ingredientes" name="ingredientes" id="ingredientes">
+                <label for="marca">Marca</label>
+                <input required type="text" class="input" placeholder="marca" name="marca" id="marca">
                 <label for="precio">Precio</label>
                 <input required type="number" class="input" placeholder="Precio" name="precio" id="precio">
                 <input required type="text" class="input" placeholder="Foto" name="foto" id="foto">                

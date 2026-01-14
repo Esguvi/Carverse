@@ -23,8 +23,8 @@ def guardar_coche():
         descripcion = coche_json["descripcion"]
         precio=coche_json["precio"]
         foto=coche_json["foto"]
-        ingredientes=coche_json["ingredientes"]
-        respuesta,code=controlador_coches.insertar_coche(nombre, descripcion,precio,foto,ingredientes)
+        marca=coche_json["marca"]
+        respuesta,code=controlador_coches.insertar_coche(nombre, descripcion,precio,foto,marca)
     else:
         respuesta={"status":"Bad request"}
         code=401
@@ -45,8 +45,8 @@ def actualizar_coche():
         descripcion = coche_json["descripcion"]
         precio=float(coche_json["precio"])
         foto=coche_json["foto"]
-        ingredientes=coche_json["ingredientes"]
-        respuesta,code=controlador_coches.actualizar_coche(id,nombre,descripcion,precio,foto,ingredientes)
+        marca=coche_json["marca"]
+        respuesta,code=controlador_coches.actualizar_coche(id,nombre,descripcion,precio,foto,marca)
     else:
         respuesta={"status":"Bad request"}
         code=401
