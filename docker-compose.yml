@@ -10,10 +10,8 @@ services:
       MARIADB_DATABASE: ciber
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./Coches.sql://docker-entrypoint-initdb.d/Coches.sql
+      - ./Coches.sql://docker-entrypoint-initdb.d/Coches.sql:ro
     user: mysql
-    ports:
-      - 3306:3306
   phpmyadmin:
     image: phpmyadmin
     container_name: phpmyadmin
@@ -24,6 +22,26 @@ services:
       - 9093:80
     depends_on:
       - mariadb
+  python:
+    build: ./api
+    container_name: python
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: example
+      DB_DATABASE: ciber
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      PORT: 8080
+      HOST: 0.0.0.0
+    depends_on:
+      - mariadb
+  apache-waf:
+    build: ./apache #./waf/ en un futuro
+    ports:
+      - 9090:80
+    depends_on:
+      - python
+    links:
+      - python
 volumes:
   mariadb_data:
-
