@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Iniciar sesión - CarShop</title>
+        <link rel="stylesheet" href="assets/css/style.css" />
+    </head>
+    
+    <body>
+
+        <div class="container" id="container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h1>Registrarse</h1>
+                <!-- SI QUISIÉRAMOS VINCULARLO CON CUENTAS DE GOOGLE/APPLE/OTRAS
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <span>or use your email for registration</span>
+                -->
+                    <input type="text" placeholder="Nombre"/>
+                    <input type="email" placeholder="Correo electrónico"/>
+                    <input type="password" placeholder="Contraseña"/>
+                    <div class="terms_conditions_container">
+                        <input class="checkbox_termscondbtn" type="checkbox" id="terms_conditions_btn" name="terms_conditions_btn" value="accepted">
+                        <label for="terms_conditions_btn">Acepto los <a class="text_termscond" href=#>términos y condiciones</a></label>
+                    </div>
+                    <button>Registrarse</button>
+                </form>
+            </div>
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h1>Iniciar sesión</h1>
+                <!-- SI QUISIÉRAMOS VINCULARLO CON CUENTAS DE GOOGLE/APPLE/OTRAS
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                        <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <span>or use your account</span>
+                -->
+                    <input type="email" placeholder="Correo electrónico"/>
+                    <input type="password" placeholder="Contraseña"/>
+                    <a href="#" class="forgot-password">¿Has olvidado tu contraseña?</a>
+                    <button>Iniciar sesión</button>
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>¡Bienvenido/a de vuelta!</h1>
+                        <p>¿Ya eres amante de los coches? Inicia sesión ahora y disfruta de todas las ventajas.</p>
+                        <button class="ghost" id="signIn">Iniciar sesión</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>¡Hola!</h1>
+                        <p>¿No estás registrado todavía? Regístrate y conviértete en un amante de los coches.</p>
+                        <button class="ghost" id="signUp">Registrarse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="assets/js/main.js"/>
+    </body>
+</html>
