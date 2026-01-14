@@ -9,14 +9,14 @@ def convertir_coche_a_json(coche):
     d['descripcion'] = coche[2]
     d['precio'] = float(coche[3])
     d['foto'] = coche[4]
-    d['ingredientes']=coche[5]
+    d['marca']=coche[5]
     return d
 
-def insertar_coche(nombre, descripcion, precio,foto,ingredientes):
+def insertar_coche(nombre, descripcion, precio,foto,marca):
     conexion = obtener_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("INSERT INTO coches(nombre, descripcion, precio,foto,ingredientes) VALUES (%s, %s, %s,%s,%s)",
-                       (nombre, descripcion, precio,foto,ingredientes))
+        cursor.execute("INSERT INTO coches(nombre, descripcion, precio,foto,marca) VALUES (%s, %s, %s,%s,%s)",
+                       (nombre, descripcion, precio,foto,marca))
     conexion.commit()
     conexion.close()
     ret={"status": "OK" }
@@ -28,7 +28,7 @@ def obtener_coches():
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT id, nombre, descripcion, precio,foto,ingredientes FROM coches")
+            cursor.execute("SELECT id, nombre, descripcion, precio,foto,marca FROM coches")
             coches = cursor.fetchall()
             if coches:
                 for coche in coches:
@@ -45,14 +45,14 @@ def obtener_coche_por_id(id):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT id, nombre, descripcion, precio,foto,ingredientes FROM coches WHERE id =" + id)
+            cursor.execute("SELECT id, nombre, descripcion, precio,foto,marca FROM coches WHERE id =" + id)
             coche = cursor.fetchone()
             if coche is not None:
                 cochejson = convertir_coche_a_json(coche)
         conexion.close()
         code=200
     except:
-        print("Excepcion al consultar una coche", flush=True)
+        print("Excepcion al consultar un coche", flush=True)
         code=500
     return cochejson,code
 def eliminar_coche(id):
@@ -68,17 +68,17 @@ def eliminar_coche(id):
         conexion.close()
         code=200
     except:
-        print("Excepcion al eliminar una coche", flush=True)
+        print("Excepcion al eliminar un coche", flush=True)
         ret = {"status": "Failure" }
         code=500
     return ret,code
 
-def actualizar_coche(id, nombre, descripcion, precio, foto,ingredientes):
+def actualizar_coche(id, nombre, descripcion, precio, foto,marca):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("UPDATE coches SET nombre = %s, descripcion = %s, precio = %s, foto=%s, ingredientes=%s WHERE id = %s",
-                       (nombre, descripcion, precio, foto,ingredientes,id))
+            cursor.execute("UPDATE coches SET nombre = %s, descripcion = %s, precio = %s, foto=%s, marca=%s WHERE id = %s",
+                       (nombre, descripcion, precio, foto,marca,id))
             if cursor.rowcount == 1:
                 ret={"status": "OK" }
             else:
@@ -87,7 +87,7 @@ def actualizar_coche(id, nombre, descripcion, precio, foto,ingredientes):
         conexion.close()
         code=200
     except:
-        print("Excepcion al actualziar una coche", flush=True)
+        print("Excepcion al actualziar un coche", flush=True)
         ret = {"status": "Failure" }
         code=500
     return ret,code

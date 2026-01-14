@@ -16,13 +16,13 @@
         function guardar(){
             let nombre=document.getElementById("nombre").value;
             let descripcion=document.getElementById("descripcion").value;
-            let ingredientes =document.getElementById("ingredientes").value;
+            let marca =document.getElementById("marca").value;
             let precio=document.getElementById("precio").value;
             let foto=document.getElementById("foto").value;
             let datos=JSON.stringify({
                 "nombre":nombre,
                 "descripcion":descripcion,
-                "ingredientes":ingredientes,
+                "marca":marca,
                 "precio":precio,
                 "foto":foto
             });
@@ -39,12 +39,12 @@
                         alert("Coche guardada")
                         location.href="coches.html"
                     } else {
-                        alert("La coche no ha podido ser guardado")
+                        alert("El coche no ha podido ser guardado")
                     }
                 })
                 .catch(error => {
                     console.log('error', error);
-                    alert("Se ha producido un error y la coche no ha podido ser guardado")
+                    alert("Se ha producido un error y el coche no ha podido ser guardado")
                 });
         }
     </script>
@@ -77,8 +77,8 @@
                 <input required type="text" class="input" placeholder="Nombre" name="nombre" id="nombre">
                 <label for="descripcion">Descripcion</label>
                 <input required type="text" class="input" placeholder="Descripcion" name="descripcion" id="descripcion">
-                <label for="ingredientesS">Ingredientes</label>
-                <input required type="text" class="input" placeholder="Ingredientes" name="ingredientes" id="ingredientes">
+                <label for="marca">Marca</label>
+                <input required type="text" class="input" placeholder="marca" name="marca" id="marca">
                 <label for="precio">Precio</label>
                 <input required type="number" class="input" placeholder="Precio" name="precio" id="precio">
                 <label for="foto">Foto</label>

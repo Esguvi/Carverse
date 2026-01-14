@@ -6,7 +6,7 @@ CREATE TABLE coches(
     descripcion VARCHAR(255) NOT NULL,
     precio DECIMAL(9,2) NOT NULL,
 	foto VARCHAR(255),
-    ingredientes VARCHAR(255)
+    marca VARCHAR(255)
 );
 CREATE TABLE comentarios(
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
