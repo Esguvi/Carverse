@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión - CarShop</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <link rel="stylesheet" href="assets/css/style.css"/>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <div class="container" id="container">
+
+        <div class="form-container sign-up-container">
+            <form>
+                <h1>Registrarse</h1>
+                <input type="text" id="reg_name" placeholder="Nombre" required/>
+                <input type="email" id="reg_email" placeholder="Correo electrónico" required/>
+                <input type="password" id="reg_password" placeholder="Contraseña" required minlength="8" maxlength="20" pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$" title="La contraseña debe tener 8-20 caracteres, incluir mayúscula, minúscula y número"/>
+                <div class="terms_conditions_container">
+                    <input type="checkbox" class="checkbox_termscondbtn" id="terms_conditions_btn" required/>
+                    <label for="terms_conditions_btn">
+                        Acepto los <a href="#" class="text_termscond">términos y condiciones</a>
+                    </label>
+                </div>
+                <button type="button" onclick="register()">Registrarse</button>
+            </form>
+        </div>
+
+        <div class="form-container sign-in-container">
+            <form onsubmit="login(event)">
+                <h1>Iniciar sesión</h1>
+
+                <input type="email" id="login_email" placeholder="Correo electrónico" required />
+                <input type="password" id="login_password" placeholder="Contraseña" required />
+
+                <a href="#" class="forgot-password">¿Has olvidado tu contraseña?</a>
+
+                <div class="error" id="loginError">
+                    Usuario o contraseña incorrectos
+                </div>
+
+                <button type="button" onclick="login()">Iniciar sesión</button>
+            </form>
+        </div>
+
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>¡Bienvenido/a de vuelta!</h1>
+                    <p>Inicia sesión para continuar.</p>
+                    <button class="ghost" id="signIn">Iniciar sesión</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>¡Hola!</h1>
+                    <p>Regístrate y forma parte de la comunidad.</p>
+                    <button class="ghost" id="signUp">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        
+        function verComentarios() {
+            location.href="comentarios.html";
+        }
+
+        function login() {
+            document.getElementsByClassName("error")[0].style.display = "none";
+            var raw = JSON.stringify({
+                "email": document.getElementById("login_email").value,
+                "password": document.getElementById("login_password").value
+            });
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw
+            };
+
+            fetch("/api/usuarios/login", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status == "OK") {
+                        location.href = "coches.html";
+                    } else {
+                        document.getElementsByClassName("error")[0].style.display = "block";
+                    }
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function register(){
+            document.getElementsByClassName("error")[0].style.display="none";
+            var raw = JSON.stringify({
+                "email": document.getElementById("reg_email").value,
+                "password": document.getElementById("reg_password").value,
+                "name": document.getElementById("reg_name").value
+            });
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw
+            };
+
+            fetch("/api/usuarios/registro", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status=="OK"){
+                        alert("Usuario registrado correctamente");
+                        location.href="index.html";
+                    } else {
+                        document.getElementsByClassName("error")[0].style.display="block";
+                    }
+                })
+                .catch(error => console.log('error', error)); 
+        }
+    </script>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

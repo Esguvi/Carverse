@@ -6,15 +6,15 @@ import datetime as dt
 def convertir_comentario_a_json(comentario):
     d = {}
     d['id'] = comentario[0]
-    d['usuario'] = comentario[1]
+    d['email'] = comentario[1]
     d['descripcion'] = comentario[2]
     return d
 
-def insertar_comentario(usuario, descripcion):
+def insertar_comentario(email, descripcion):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("INSERT INTO comentarios(usuario, descripcion) VALUES ('"+ usuario +"','" + descripcion + "')")
+            cursor.execute("INSERT INTO comentarios(email, descripcion) VALUES ('"+ email +"','" + descripcion + "')")
             conexion.commit()
         conexion.close()
         ret={"status": "OK" }
@@ -30,7 +30,7 @@ def obtener_comentarios():
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT id, usuario, descripcion FROM comentarios")
+            cursor.execute("SELECT id, email, descripcion FROM comentarios")
             comentarios = cursor.fetchall()
             if comentarios:
                 for comentario in comentarios:

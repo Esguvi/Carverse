@@ -9,9 +9,9 @@ def login():
     content_type = request.headers.get('Content-Type')
     if (content_type == 'application/json'):
         comentario_json = request.json
-        usuario = comentario_json['usuario']
+        email = comentario_json['email']
         descripcion = comentario_json['descripcion']
-        respuesta,code= controlador_comentarios.insertar_comentario(usuario,descripcion)
+        respuesta,code= controlador_comentarios.insertar_comentario(email,descripcion)
     else:
         respuesta={"status":"Bad request"}
         code=401
