@@ -1,47 +1,51 @@
+version: '3.8'
+
 services:
-  mariadb:
-    image: mariadb
-    container_name: mariadb
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: example
-      MARIADB_USER: agente
-      MARIADB_USER_PASSWORD: 0traClave
-      MARIADB_DATABASE: ciber
-    volumes:
-      - mariadb_data:/var/lib/mysql
-      - ./Coches.sql://docker-entrypoint-initdb.d/Coches.sql:ro
-    user: mysql
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    environment:
-      - PMA_HOST=mariadb
+  apache:
+    build:
+      context: ./apache
+    container_name: apachea2
     ports:
-      - 9093:80
+      - "6002:80"
     depends_on:
-      - mariadb
+      - python
+
   python:
-    build: ./api
-    container_name: python
+    build:
+      context: ./api
+    container_name: pythona2
+    expose:
+      - "8080"
     environment:
-      DB_USERNAME: root
-      DB_PASSWORD: example
-      DB_DATABASE: ciber
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      PORT: 8080
-      HOST: 0.0.0.0
+      - HOST=0.0.0.0
+      - PORT=8080
     depends_on:
       - mariadb
-  apache-waf:
-    build: ./apache #./waf/ en un futuro
+
+  mariadb:
+    image: mariadb:10.11
+    container_name: mariadba2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: carshop
+      MYSQL_USER: grupo2a
+      MYSQL_PASSWORD: grupo2a
+    volumes:
+      - mariadb-dataa2:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: phpmyadmina2
+    restart: always
     ports:
-      - 9090:80
+      - "7002:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: grupo2a
+      PMA_PASSWORD: grupo2a
     depends_on:
-      - python
-    links:
-      - python
+      - mariadb
+
 volumes:
-  mariadb_data:
+  mariadb-dataa2:
