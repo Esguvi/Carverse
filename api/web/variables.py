@@ -2,7 +2,7 @@ import os
 def cargarvariables():
     os.environ['DB_USERNAME']='root'
     os.environ['DB_PASSWORD']='example'
-    os.environ['DB_DATABASE']='ciber'
+    os.environ['DB_DATABASE']='ciber1'
     os.environ['DB_HOST']='localhost'
     os.environ['DB_PORT']='3306'
     os.environ['PORT']='8080'

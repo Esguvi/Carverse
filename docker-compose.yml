@@ -7,10 +7,10 @@ services:
       MARIADB_ROOT_PASSWORD: example
       MARIADB_USER: agente
       MARIADB_USER_PASSWORD: 0traClave
-      MARIADB_DATABASE: ciber
+      MARIADB_DATABASE: ciber1
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./Coches.sql://docker-entrypoint-initdb.d/Coches.sql:ro
+      - ./Coches.sql:/docker-entrypoint-initdb.d/Coches.sql:ro
     user: mysql
   phpmyadmin:
     image: phpmyadmin
@@ -28,7 +28,7 @@ services:
     environment:
       DB_USERNAME: root
       DB_PASSWORD: example
-      DB_DATABASE: ciber
+      DB_DATABASE: ciber1
       DB_HOST: mariadb
       DB_PORT: 3306
       PORT: 8080

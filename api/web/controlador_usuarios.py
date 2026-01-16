@@ -12,7 +12,7 @@ from flask import session
 # --------------------------------------------------
 # Función para validar el login de un usuario
 # --------------------------------------------------
-def login_usuario(username, password):
+def login_usuario(email, password):
     try:
         # Abrimos conexión con la base de datos
         conexion = obtener_conexion()
@@ -20,17 +20,17 @@ def login_usuario(username, password):
         # Creamos un cursor para ejecutar consultas
         with conexion.cursor() as cursor:
             # Consulta SQL para comprobar usuario y contraseña
-            cursor.execute("SELECT name FROM usuarios WHERE email = '" + email +"' and password= '" + password + "'")
+            cursor.execute("SELECT email FROM usuarios WHERE email = %s AND password = %s",(email, password))
             
             # Obtenemos el resultado
-            email = cursor.fetchone()
+            user = cursor.fetchone()
             
             # Si no existe el usuario
-            if email is None:
+            if user is None:
                 ret = {"status": "ERROR","mensaje":"Usuario/password erroneo" }
             else:
                 # Guardamos el usuario en la sesión
-                session["email"] = email
+                session["email"] = user
 
                 # Login correcto
                 ret = {"status": "OK"}
@@ -50,19 +50,19 @@ def login_usuario(username, password):
 # --------------------------------------------------
 # Función para registrar un nuevo usuario
 # --------------------------------------------------
-def alta_usuario(username, password, perfil):
+def alta_usuario(email, password, name):
     try:
         conexion = obtener_conexion()
 
         with conexion.cursor() as cursor:
             # Comprobamos si el usuario ya existe
             cursor.execute("SELECT name FROM usuarios WHERE email = %s",(email,))
-            email = cursor.fetchone()
+            user = cursor.fetchone()
       
             # Si el usuario no existe
-            if email is None:
+            if user is None:
                 # Insertamos el nuevo usuario
-                cursor.execute("INSERT INTO usuarios(email,password,name) VALUES('"+ email +"','"+  password+"','"+ name+"')")
+                cursor.execute("INSERT INTO usuarios (email, password, name) VALUES (%s, %s, %s)",(email, password, name))
                 
                 # Comprobamos si se insertó correctamente
                 if cursor.rowcount == 1:

@@ -37,7 +37,7 @@ def create_app():
     app.register_blueprint(usuarios_bp, url_prefix='/api/usuarios')
 
     # Rutas relacionadas con coches
-    from api.web.rutas_coches import bp as coches_bp
+    from rutas_coches import bp as coches_bp
     app.register_blueprint(coches_bp, url_prefix='/api/coches')
 
     # Rutas relacionadas con ficheros
@@ -82,7 +82,7 @@ if __name__ == '__main__':
         host = os.environ.get('HOST')
 
         # Arrancamos el servidor Flask
-        app.run(host=host, port=port)
+        app.run(host=host, port=port, debug=True)
     except:
         # Mensaje si ocurre un error al arrancar el servidor
         print("Error starting server", flush=True)
