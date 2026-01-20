@@ -40,9 +40,11 @@ services:
       - ./Coches.sql:/docker-entrypoint-initdb.d/Coches.sql:ro
 
   phpmyadmin:
-    image: phpmyadmin:5.2
-    container_name: phpmyadmina2
+    image: phpmyadmin
+    container_name: phpmyadmin
     restart: always
+    environment:
+      - PMA_HOST=mariadb
     ports:
       - 9093:80
     depends_on:
