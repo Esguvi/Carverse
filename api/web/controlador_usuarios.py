@@ -1,17 +1,28 @@
 from bd import obtener_conexion
 from flask import session
 
-# Función para login de usuario
+
+# --------------------------------------------------
+# Función para validar el login de un usuario
+# --------------------------------------------------
 def login_usuario(email, password):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT email FROM usuarios WHERE email=%s AND password=%s", (email, password))
-            usuario = cursor.fetchone()
-            if usuario is None:
-                ret = {"status": "ERROR", "mensaje": "Usuario/password erroneo"}
+            # Consulta SQL para comprobar usuario y contraseña
+            cursor.execute("SELECT email FROM usuarios WHERE email = %s AND password = %s",(email, password))
+            
+            # Obtenemos el resultado
+            user = cursor.fetchone()
+            
+            # Si no existe el usuario
+            if user is None:
+                ret = {"status": "ERROR","mensaje":"Usuario/password erroneo" }
             else:
-                session["email"] = usuario['email']
+                # Guardamos el usuario en la sesión
+                session["email"] = user
+
+                # Login correcto
                 ret = {"status": "OK"}
         code = 200
         conexion.close()
@@ -21,18 +32,31 @@ def login_usuario(email, password):
         code = 500
     return ret, code
 
-# Función para registrar usuario nuevo
+
+# --------------------------------------------------
+# Función para registrar un nuevo usuario
+# --------------------------------------------------
 def alta_usuario(email, password, name):
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT email FROM usuarios WHERE email=%s", (email,))
-            existe = cursor.fetchone()
-            if existe is None:
-                cursor.execute("INSERT INTO usuarios(email,password,name) VALUES (%s,%s,%s)", (email,password,name))
-                conexion.commit()
-                ret = {"status": "OK"}
-                code = 200
+            # Comprobamos si el usuario ya existe
+            cursor.execute("SELECT name FROM usuarios WHERE email = %s",(email,))
+            user = cursor.fetchone()
+      
+            # Si el usuario no existe
+            if user is None:
+                # Insertamos el nuevo usuario
+                cursor.execute("INSERT INTO usuarios (email, password, name) VALUES (%s, %s, %s)",(email, password, name))
+                
+                # Comprobamos si se insertó correctamente
+                if cursor.rowcount == 1:
+                    conexion.commit()
+                    ret = {"status": "OK"}
+                    code = 200
+                else:
+                    ret = {"status": "ERROR"}
+                    code = 500
             else:
                 ret = {"status": "ERROR", "mensaje": "Usuario ya existe"}
                 code = 200

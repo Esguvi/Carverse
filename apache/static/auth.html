@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Iniciar sesión - CarShop</title>
+    <title>Iniciar sesión - Carverse</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -33,7 +33,7 @@
         </div>
 
         <div class="form-container sign-in-container">
-            <form onsubmit="login(event)">
+            <form>
                 <h1>Iniciar sesión</h1>
 
                 <input type="email" id="login_email" placeholder="Correo electrónico" required />
@@ -117,7 +117,7 @@
                 .then(result => {
                     if (result.status=="OK"){
                         alert("Usuario registrado correctamente");
-                        location.href="index.html";
+                        location.href="auth.html";
                     } else {
                         document.getElementsByClassName("error")[0].style.display="block";
                     }
