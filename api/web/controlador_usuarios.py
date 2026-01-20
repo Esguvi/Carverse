@@ -1,11 +1,4 @@
-# Función para obtener la conexión con la base de datos
 from bd import obtener_conexion
-
-# sys y datetime se importan por si se necesitan en el futuro
-import sys
-import datetime as dt
-
-# session permite manejar sesiones de usuario en Flask
 from flask import session
 
 
@@ -14,10 +7,7 @@ from flask import session
 # --------------------------------------------------
 def login_usuario(email, password):
     try:
-        # Abrimos conexión con la base de datos
         conexion = obtener_conexion()
-
-        # Creamos un cursor para ejecutar consultas
         with conexion.cursor() as cursor:
             # Consulta SQL para comprobar usuario y contraseña
             cursor.execute("SELECT email FROM usuarios WHERE email = %s AND password = %s",(email, password))
@@ -34,16 +24,12 @@ def login_usuario(email, password):
 
                 # Login correcto
                 ret = {"status": "OK"}
-
         code = 200
         conexion.close()
-
-    except:
-        # En caso de error se muestra en consola
-        print("Excepcion al validar al usuario", flush=True)
+    except Exception as e:
+        print("Excepción al validar usuario:", e, flush=True)
         ret = {"status": "ERROR"}
         code = 500
-
     return ret, code
 
 
@@ -53,7 +39,6 @@ def login_usuario(email, password):
 def alta_usuario(email, password, name):
     try:
         conexion = obtener_conexion()
-
         with conexion.cursor() as cursor:
             # Comprobamos si el usuario ya existe
             cursor.execute("SELECT name FROM usuarios WHERE email = %s",(email,))
@@ -73,27 +58,16 @@ def alta_usuario(email, password, name):
                     ret = {"status": "ERROR"}
                     code = 500
             else:
-                # Usuario ya existente
                 ret = {"status": "ERROR", "mensaje": "Usuario ya existe"}
                 code = 200
-
         conexion.close()
-
-    except:
-        print("Excepcion al registrar al usuario", flush=True)
+    except Exception as e:
+        print("Excepción al registrar usuario:", e, flush=True)
         ret = {"status": "ERROR"}
         code = 500
-
     return ret, code
 
-
-# --------------------------------------------------
-# Función de LOGOUT
-# Elimina los datos de sesión del usuario
-# --------------------------------------------------
+# Función de logout
 def logout():
-    # Borra toda la información almacenada en la sesión
     session.clear()
-
-    # Devuelve confirmación
     return {"status": "OK"}, 200
