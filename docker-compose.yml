@@ -5,8 +5,9 @@ services:
     build:
       context: ./apache
     container_name: apachea2
+    restart: unless-stopped
     ports:
-      - "9090:80"
+      - "6002:80"
     depends_on:
       - python
     links:
@@ -15,38 +16,39 @@ services:
   python:
     build: ./api
     container_name: pythona2
+    restart: unless-stopped
     environment:
-      DB_USERNAME: grupo2a
-      DB_PASSWORD: grupo2a
-      DB_DATABASE: ciber
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      PORT: 8080
-      HOST: 0.0.0.0
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      PORT: ${PORT}
+      HOST: ${HOST}
     depends_on:
       - mariadb
 
   mariadb:
     image: mariadb
     container_name: mariadba2
-    restart: always
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: ciber
-      MYSQL_USER: grupo2a
-      MYSQL_PASSWORD: grupo2a
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mariadb-dataa2:/var/lib/mysql
       - ./Coches.sql:/docker-entrypoint-initdb.d/Coches.sql:ro
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: phpmyadmin
-    restart: always
+    container_name: phpmyadmina2
+    restart: unless-stopped
     environment:
       - PMA_HOST=mariadb
     ports:
-      - 9093:80
+      - 7002:80
     depends_on:
       - mariadb
 
