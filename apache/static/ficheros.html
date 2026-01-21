@@ -105,10 +105,10 @@
         fetch("/api/ficheros/" + nombreArchivo, { method: "GET" })
         .then(res => res.json())
         .then(result => {
-            if(result.status === "OK") {
+            if (result.contenido) {
                 document.getElementById("contenidoArchivo").value = result.contenido;
             } else {
-                document.getElementById("contenidoArchivo").value = "EL CONTENIDO NO ESTÁ DISPONIBLE";
+                document.getElementById("contenidoArchivo").value = "El contenido no está disponible o el archivo no existe.";
             }
         })
         .catch(err => {
