@@ -15,7 +15,9 @@ spec:
     spec:
       containers:
         - name: python
-          image: 
+          image: victoralejos/python:1.0
+          ports:
+            - containerPort: 8080
           env:
             - name: DB_USERNAME
               valueFrom:
