@@ -2,93 +2,107 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Agregar Coche - Carverse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <title>EJEMPLO APP apache CON CRUD</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
-    <script>
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        function guardar(){
-            let nombre=document.getElementById("nombre").value;
-            let descripcion=document.getElementById("descripcion").value;
-            let marca =document.getElementById("marca").value;
-            let precio=document.getElementById("precio").value;
-            let foto=document.getElementById("foto").value;
-            let datos=JSON.stringify({
-                "nombre":nombre,
-                "descripcion":descripcion,
-                "marca":marca,
-                "precio":precio,
-                "foto":foto
-            });
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: datos
-            };
-
-            fetch("/api/coches", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.status == "OK"){
-                        alert("Coche guardada")
-                        location.href="coches.html"
-                    } else {
-                        alert("El coche no ha podido ser guardado")
-                    }
-                })
-                .catch(error => {
-                    console.log('error', error);
-                    alert("Se ha producido un error y el coche no ha podido ser guardado")
-                });
-        }
-    </script>
 </head>
-<body>
-    <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <button class="navbar-burger is-warning button" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </button>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <img src="assets/img/logo.png" alt="Logo Carverse">
         </div>
-        <div class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="coches.html">Coches</a>
-            </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
+        <h2>Carverse</h2>
+        <nav>
+            <a href="dashboard.html">Inicio</a>
+            <a class="active" href="coches.html">Coches</a>
+            <a href="comentarios.html">Comentarios</a>
+            <a href="ficheros.html">Archivos</a>
+            <a href="#" onclick="logout()">Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="dashboard-main">
+        <header class="dashboard-header">
+            <h1>Agregar Coche</h1>
+            <p>Rellena los datos del coche y guárdalo en la base de datos.</p>
+        </header>
+
+        <section class="form-section">
+            <div class="form-container-small">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" placeholder="Nombre del coche" required>
+
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" placeholder="Descripción" required>
+
+                <label for="marca">Marca:</label>
+                <input type="text" id="marca" placeholder="Marca" required>
+
+                <label for="precio">Precio (€):</label>
+                <input type="number" id="precio" placeholder="Precio" required>
+
+                <label for="foto">URL de la foto:</label>
+                <input type="text" id="foto" placeholder="URL de la foto" required>
+
+                <label for="filefoto">Subir archivo (opcional):</label>
+                <input type="file" id="filefoto">
+
+                <div class="form-buttons">
+                    <button type="button" class="button" onclick="guardar()">Guardar</button>
+                    <a href="coches.html" class="button ghost">Volver</a>
                 </div>
             </div>
-        </div>
-    </nav>
-  <section class="section">
-    <div class="columns">
-        <div class="column">
-            <h3 class="is-size-3">Agregar Coche</h3>
-                <label for="nombre">Nombre:</label>
-                <input required type="text" class="input" placeholder="Nombre" name="nombre" id="nombre">
-                <label for="descripcion">Descripcion</label>
-                <input required type="text" class="input" placeholder="Descripcion" name="descripcion" id="descripcion">
-                <label for="marca">Marca</label>
-                <input required type="text" class="input" placeholder="marca" name="marca" id="marca">
-                <label for="precio">Precio</label>
-                <input required type="number" class="input" placeholder="Precio" name="precio" id="precio">
-                <label for="foto">Foto</label>
-                <input required type="text" class="input" placeholder="Foto" name="foto" id="foto">                
-                <input required type="file" class="input" placeholder="Archivo Foto" name="filefoto" id="filefoto">
-                <button type="button" onclick="guardar()" class="button is-success mt-2">Guardar</button>
-                <a href="coches.html" class="button is-primary mt-2">Volver</a>
-            </form>
-        </div>
-    </div>
-</section>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    function logout() {
+        location.href = "auth.html";
+    }
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    function guardar() {
+        const datos = {
+            nombre: document.getElementById("nombre").value,
+            descripcion: document.getElementById("descripcion").value,
+            marca: document.getElementById("marca").value,
+            precio: parseFloat(document.getElementById("precio").value),
+            foto: document.getElementById("foto").value
+        };
+
+        fetch("/api/coches/", {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify(datos)
+        })
+        .then(res => res.json())
+        .then(result => {
+            if(result.status === "OK") {
+                alert("Coche guardado correctamente");
+                location.href = "coches.html";
+            } else {
+                alert("No se pudo guardar el coche");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al guardar el coche");
+        });
+    }
+</script>
+
 </body>
 </html>

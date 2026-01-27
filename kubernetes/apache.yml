@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-waf
+  namespace: ciber2a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache-waf
+  template:
+    metadata:
+      labels:
+        app: apache-waf
+    spec:
+      containers:
+        - name: apache
+          image: 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-waf
+  namespace: ciber2a
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30600
+  selector:
+    app: apache-waf

@@ -1,73 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Archivos - Carverse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Last-Modified" content="0">
-    <title>Document</title>
-    <script>
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        function enviarArchivo(){
-            const formData = new FormData();
-            formData.append('fichero',document.getElementById("fichero").files[0]);
-            formData.append('nombre',document.getElementById("nombre").value);
-            var requestOptions = {
-                method: 'POST',
-                body: formData
-            };
-
-            fetch("/api/ficheros/", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.status == "OK"){
-                        alert("archivo subido correctamente");
-                        location.href="index.html"
-                    } else {
-                        alert("El archivo no ha podido subirse");
-                    }
-                })
-                .catch(error => {
-                    console.log('error', error);
-                    alert("Ha habido un error al recuperar el archivo. Refresque la página")
-                });
-        }
-
-        function verArchivo(){
-            var requestOptions = {
-                method: 'GET',
-            };
-
-            fetch("/api/ficheros/" + document.getElementById("nombreArchivo").value, requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.status == "OK"){
-                        document.getElementById("contenidoArchivo").innerText=result.contenido;
-                    } else {
-                        document.getElementById("contenidoArchivo").innerText="EL CONTENIDO NO ESTA DISPONIBLE";                        
-                    }
-                })
-                .catch(error => {
-                    console.log('error', error);
-                    alert("Ha habido un error al recuperar el archivo. Refresque la página")
-                });
-        }
- 
-    </script>
 </head>
-<body>
-    <h1>SUBIR UN ARCHIVO</h1>
-        <label>Nombre archivo</label><input type="text" name="nombre" id="nombre"><br>
-        <label>Archivo</label><input type="file" name="fichero" id="fichero"><br>
-        <button type="button" onclick="enviarArchivo()">ENVIAR</button><br>
-    <h1>VER CONTENIDO DE UN ARCHIVO</h1>
-    <label>Nombre archivo</label><input type="text" name="nombreArchivo" id="nombreArchivo"><br>
-    <button type="button" onclick="verArchivo()">Ver</button><br>
-    <label>Contenido archivo</label><textarea id="contenidoArchivo"></textarea><br>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <img src="assets/img/logo.png" alt="Logo Carverse">
+        </div>
+        <h2>Carverse</h2>
+        <nav>
+            <a href="dashboard.html">Inicio</a>
+            <a href="coches.html">Coches</a>
+            <a href="comentarios.html">Comentarios</a>
+            <a class="active" href="ficheros.html">Archivos</a>
+            <a href="#" onclick="logout()">Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="dashboard-main">
+        <header class="dashboard-header">
+            <h1>Gestión de Archivos</h1>
+            <p>Sube y visualiza el contenido de los archivos.</p>
+        </header>
+
+        <!-- Subir archivo -->
+        <section class="form-section">
+            <h2>Subir archivo</h2>
+            <div class="form-container-small">
+                <label for="nombre">Nombre del archivo:</label>
+                <input type="text" id="nombre" placeholder="Nombre del archivo" required>
+
+                <label for="fichero">Seleccionar archivo:</label>
+                <input type="file" id="fichero" required>
+
+                <div class="form-buttons">
+                    <button type="button" class="button" onclick="enviarArchivo()">Subir</button>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Ver archivo -->
+        <section class="form-section">
+            <h2>Ver contenido de un archivo</h2>
+            <div class="form-container-small">
+                <label for="nombreArchivo">Nombre del archivo:</label>
+                <input type="text" id="nombreArchivo" placeholder="Nombre del archivo" required>
+
+                <div class="form-buttons">
+                    <button type="button" class="button" onclick="verArchivo()">Ver</button>
+                </div>
+
+                <label for="contenidoArchivo">Contenido:</label>
+                <textarea id="contenidoArchivo" placeholder="El contenido aparecerá aquí..." readonly></textarea>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    function enviarArchivo(){
+        const formData = new FormData();
+        formData.append('fichero', document.getElementById("fichero").files[0]);
+        formData.append('nombre', document.getElementById("nombre").value);
+
+        fetch("/api/ficheros/", { method: "POST", body: formData })
+        .then(res => res.json())
+        .then(result => {
+            if(result.status === "OK") {
+                alert("Archivo subido correctamente");
+                document.getElementById("nombre").value = "";
+                document.getElementById("fichero").value = "";
+            } else {
+                alert("El archivo no pudo subirse");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al subir el archivo");
+        });
+    }
+
+    function verArchivo(){
+        const nombreArchivo = document.getElementById("nombreArchivo").value;
+
+        fetch("/api/ficheros/" + nombreArchivo, { method: "GET" })
+        .then(res => res.json())
+        .then(result => {
+            if (result.contenido) {
+                document.getElementById("contenidoArchivo").value = result.contenido;
+            } else {
+                document.getElementById("contenidoArchivo").value = "El contenido no está disponible o el archivo no existe.";
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al recuperar el archivo");
+        });
+    }
+
+    function cerrarSesion(){
+        fetch("/api/usuarios/logout", { method: "GET", headers: myHeaders })
+        .then(res => res.json())
+        .then(result => {
+            if(result.status === "OK") location.href = "auth.html";
+            else alert("No se ha podido cerrar sesión");
+        })
+        .catch(err => { console.error(err); alert("Error al cerrar sesión"); });
+    }
+</script>
 
 </body>
 </html>

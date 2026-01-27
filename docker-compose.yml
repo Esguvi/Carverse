@@ -1,47 +1,56 @@
+version: '3.8'
+
 services:
-  mariadb:
-    image: mariadb
-    container_name: mariadb
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: example
-      MARIADB_USER: agente
-      MARIADB_USER_PASSWORD: 0traClave
-      MARIADB_DATABASE: ciber
-    volumes:
-      - mariadb_data:/var/lib/mysql
-      - ./Coches.sql://docker-entrypoint-initdb.d/Coches.sql:ro
-    user: mysql
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    environment:
-      - PMA_HOST=mariadb
+  apache:
+    build:
+      context: ./apache
+    container_name: apachea2
+    restart: unless-stopped
     ports:
-      - 9093:80
-    depends_on:
-      - mariadb
-  python:
-    build: ./api
-    container_name: python
-    environment:
-      DB_USERNAME: root
-      DB_PASSWORD: example
-      DB_DATABASE: ciber
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      PORT: 8080
-      HOST: 0.0.0.0
-    depends_on:
-      - mariadb
-  apache-waf:
-    build: ./apache #./waf/ en un futuro
-    ports:
-      - 9090:80
+      - "6002:80"
     depends_on:
       - python
     links:
       - python
+
+  python:
+    build: ./api
+    container_name: pythona2
+    restart: unless-stopped
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      PORT: ${PORT}
+      HOST: ${HOST}
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb
+    container_name: mariadba2
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb-dataa2:/var/lib/mysql
+      - ./Coches.sql:/docker-entrypoint-initdb.d/Coches.sql:ro
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmina2
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=mariadb
+    ports:
+      - 7002:80
+    depends_on:
+      - mariadb
+
 volumes:
-  mariadb_data:
+  mariadb-dataa2:

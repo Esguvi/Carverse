@@ -2,13 +2,88 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <title>Inicio - Carverse</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carverse - Inicio</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
 </head>
-<body>
-    <h1>Bienvenido a Carverse</h1>
-    <p>Has iniciado sesión correctamente.</p>
-    <button onclick="location.href='coches.html'">Ver Coches</button>
-    <button onclick="location.href='comentarios.html'">Ver Comentarios</button>
+
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <!-- Logo -->
+        <div class="sidebar-logo">
+            <img src="assets/img/logo.png" alt="Logo Carverse">
+        </div>
+        <h2>Carverse</h2>
+        <nav>
+            <a class="active" href="dashboard.html">Inicio</a>
+            <a href="coches.html">Coches</a>
+            <a href="comentarios.html">Comentarios</a>
+            <a href="ficheros.html">Archivos</a>
+            <a href="#" onclick="logout()">Cerrar sesión</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+            <h1>Bienvenido/a</h1>
+            <p>Panel de control de Carverse</p>
+        </header>
+
+        <section class="stats">
+            <div class="stat-card">
+                <h3>Coches</h3>
+                <p id="totalCoches">—</p>
+            </div>
+
+        <!--
+            <div class="stat-card">
+                <h3>Estado</h3>
+                <p>Cuenta activa</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Últimos coches</h2>
+
+            <div class="cars-grid" id="carsGrid">
+                <!-- JS -->
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    function logout() {
+        location.href = "auth.html";
+    }
+
+    fetch("/api/coches")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("totalCoches").textContent = data.length;
+
+            const grid = document.getElementById("carsGrid");
+            data.slice(0, 6).forEach(coche => {
+                grid.innerHTML += `
+                    <div class="car-card">
+                        <h3>${coche.marca} ${coche.modelo}</h3>
+                        <p>Año: ${coche.anio}</p>
+                        <p><strong>${coche.precio} €</strong></p>
+                    </div>
+                `;
+            });
+        });
+</script>
+
 </body>
 </html>

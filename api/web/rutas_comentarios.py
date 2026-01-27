@@ -18,7 +18,7 @@ def login():
     return jsonify(respuesta), code
 
 @bp.route("/",methods=['GET'])
-def consultaComentarios():
+def consultacomentarios():
     respuesta,code= controlador_comentarios.obtener_comentarios()
     return jsonify(respuesta), code
 

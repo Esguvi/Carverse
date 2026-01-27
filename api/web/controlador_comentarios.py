@@ -3,12 +3,7 @@ import sys
 import datetime as dt
 
 
-def convertir_comentario_a_json(comentario):
-    d = {}
-    d['id'] = comentario[0]
-    d['email'] = comentario[1]
-    d['descripcion'] = comentario[2]
-    return d
+
 
 def insertar_comentario(email, descripcion):
     try:
@@ -30,14 +25,13 @@ def obtener_comentarios():
     try:
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("SELECT id, email, descripcion FROM comentarios")
+            cursor.execute("SELECT email, descripcion FROM comentarios")
             comentarios = cursor.fetchall()
-            if comentarios:
-                for comentario in comentarios:
-                    comentariosjson.append(convertir_comentario_a_json(comentario))
+           
+            
         conexion.close()
         code=200
-    except:
-        print("Excepcion al consultar todas los comentarios", flush=True)
+    except Exception as e:
+        print("Excepcion al consultar todas los comentarios", e, flush=True)
         code=500
-    return comentariosjson,code
+    return comentarios,code
