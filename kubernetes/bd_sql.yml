@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-initdb
+  namespace: cibera2
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS ciber;
+    USE ciber;
+    CREATE TABLE coches(
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(255) NOT NULL,
+        descripcion VARCHAR(255) NOT NULL,
+        precio DECIMAL(9,2) NOT NULL,
+        foto VARCHAR(255),
+        marca VARCHAR(255)
+    );
+    CREATE TABLE comentarios(
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL,
+        descripcion VARCHAR(255) NOT NULL
+    );
+    CREATE TABLE usuarios(
+      email VARCHAR(100) NOT NULL PRIMARY KEY,
+        password VARCHAR(255) NOT NULL,
+        name VARCHAR(100) NOT NULL
+    );
+    INSERT INTO `usuarios` (`email`, `password`, `name`) VALUES ('admin@carverse.com','1234', 'root');
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: cibera2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb
+          envFrom:
+            - secretRef:
+                name: cibera2-secret
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+            - name: mariadb-init
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: cibera2-pvc
+        - name: mariadb-init
+          configMap:
+            name: mariadb-initdb
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  namespace: cibera2
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mariadb
