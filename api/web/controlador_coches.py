@@ -1,4 +1,5 @@
 from bd import obtener_conexion
+from funciones_auxiliares import calculariva
 
 def convertir_coche_a_json(coche):
     return {
@@ -6,6 +7,7 @@ def convertir_coche_a_json(coche):
         "nombre": coche["nombre"],
         "descripcion": coche["descripcion"],
         "precio": float(coche["precio"]),
+        "precioIva": calculariva(float(coche["precio"])),
         "foto": coche.get("foto"),
         "marca": coche.get("marca")
     }
