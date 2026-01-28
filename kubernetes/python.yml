@@ -23,17 +23,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: grupoa2-secret
-                  key: MARIADB_USER
+                  key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: grupoa2-secret
-                  key: MARIADB_USER_PASSWORD
+                  key: DB_PASSWORD
             - name: DB_DATABASE
               valueFrom:
                 secretKeyRef:
                   name: grupoa2-secret
-                  key: MARIADB_DATABASE
+                  key: DB_DATABASE
             - name: DB_HOST
               value: mariadb
             - name: DB_PORT
