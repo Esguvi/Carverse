@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python
-  namespace: ciber2a
+  namespace: grupoa2
 spec:
   replicas: 1
   selector:
@@ -15,23 +15,25 @@ spec:
     spec:
       containers:
         - name: python
-          image: 
+          image: victoralejos/python:1.0
+          ports:
+            - containerPort: 8080
           env:
             - name: DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: ciber2a-secret
-                  key: MARIADB_USER
+                  name: grupoa2-secret
+                  key: DB_USERNAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ciber2a-secret
-                  key: MARIADB_USER_PASSWORD
+                  name: grupoa2-secret
+                  key: DB_PASSWORD
             - name: DB_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: ciber2a-secret
-                  key: MARIADB_DATABASE
+                  name: grupoa2-secret
+                  key: DB_DATABASE
             - name: DB_HOST
               value: mariadb
             - name: DB_PORT
@@ -45,7 +47,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: python
-  namespace: ciber2a
+  namespace: grupoa2
 spec:
   ports:
     - port: 8080
