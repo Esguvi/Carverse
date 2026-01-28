@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: apache-waf
-  namespace: ciber2a
+  namespace: cibera2
 spec:
   replicas: 1
   selector:
@@ -24,7 +24,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: apache-waf
-  namespace: ciber2a
+  namespace: cibera2
 spec:
   type: NodePort
   ports:
