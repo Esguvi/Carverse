@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: apache
-        - ports:
+          ports:
             - containerPort: 80
           image: victoralejos/apache:1.0
 
