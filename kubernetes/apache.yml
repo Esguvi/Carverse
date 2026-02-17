@@ -14,7 +14,7 @@ spec:
         app: apache-waf
     spec:
       containers:
-        - name: apache
+        - name: apache-waf
           ports:
             - containerPort: 80
           image: victoralejos/apache:1.0
